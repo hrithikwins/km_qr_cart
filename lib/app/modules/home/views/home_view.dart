@@ -39,7 +39,7 @@ class HomeView extends GetView<HomeController> {
                         }
                         return null;
                       },
-                      onSaved: (value) => controller.name.value = value!,
+                      onChanged: (value) => controller.name.value = value,
                     ),
                     //sizedbox
                     SizedBox(
@@ -56,12 +56,13 @@ class HomeView extends GetView<HomeController> {
                         }
                         return null;
                       },
-                      onSaved: (value) => controller.email.value = value!,
+                      onChanged: (value) => controller.email.value = value,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
+                        keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Phone',
                         border: OutlineInputBorder(),
@@ -72,7 +73,7 @@ class HomeView extends GetView<HomeController> {
                         }
                         return null;
                       },
-                      onSaved: (value) => controller.phone.value = value!,
+                      onChanged: (value) => controller.phone.value = value,
                     ),
                     SizedBox(
                       height: 10,
@@ -88,8 +89,8 @@ class HomeView extends GetView<HomeController> {
                         }
                         return null;
                       },
-                      onSaved: (value) =>
-                          controller.trolleyNumber.value = value!,
+                      onChanged: (value) =>
+                          controller.trolleyNumber.value = value,
                     ),
                     //sizedbox
                     SizedBox(

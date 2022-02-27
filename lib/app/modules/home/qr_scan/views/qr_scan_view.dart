@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:km_qr_cart/app/modules/home/cart_summary/controllers/cart_summary_controller.dart';
+import 'package:km_qr_cart/app/modules/home/controllers/home_controller.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../controllers/qr_scan_controller.dart';
@@ -33,6 +37,7 @@ class _QrScanViewState extends State<QrScanView> {
 
   @override
   Widget build(BuildContext context) {
+    CartSummaryController controller = Get.put(CartSummaryController());
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -41,38 +46,74 @@ class _QrScanViewState extends State<QrScanView> {
             Get.back();
           },
         ),
-        title: const Text('Scan a QR code for shopping cart'),
+        title: const Text('Shopping cart'),
       ),
       body: Column(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
+          SizedBox(height: 200, child: _buildQrView(context)),
           SizedBox(
             width: Get.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 if (result != null)
                   SizedBox(
-                    height: 200,
+                    height: Get.height - 300,
                     width: Get.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Product Name: : ${result!.code}'),
+                        Container(
+                          height: Get.height - 400,
+                          width: Get.width,
+                          child: Card(
+                            elevation: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                productCard(
+                                    "Product name",
+                                    jsonDecode(
+                                        result!.code.toString())["name"]),
+                                productCard(
+                                    "Product Price",
+                                    "\u20B9" +
+                                        jsonDecode(
+                                            result!.code.toString())["price"]),
+                                productCard(
+                                    "Weight (in grams)",
+                                    jsonDecode(
+                                        result!.code.toString())["weight"]),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
-                            child: Text('Add to Cart'),
+                            child: Text('ADD TO CART'),
                             onPressed: () {
-                              Get.snackbar(
-                                  "Unable to add to cart", "Try in next apk");
+                              var storageBox = GetStorage();
+                              storageBox.writeIfNull("products", []);
+                              var products = storageBox.read("products");
+                              products.add(jsonDecode(result!.code.toString()));
+                              storageBox.write("products", products);
+
+                              controller.refreshCart();
+                              Get.back();
+                              // Get.snackbar(
+                              //   "Added to cart",
+                              //   "Added to cart",
+                              //   snackPosition: SnackPosition.TOP,
+                              //   backgroundColor: Colors.green,
+                              //   borderRadius: 10,
+                              //   margin: EdgeInsets.all(10),
+                              //   borderColor: Colors.green,
+                              //   colorText: Colors.white,
+                              // );
                             },
                           ),
                         ),
@@ -85,7 +126,7 @@ class _QrScanViewState extends State<QrScanView> {
                 else
                   Padding(
                     padding: const EdgeInsets.all(38.0),
-                    child: const Text('Scan code to add to cart'),
+                    child: const Text('Scan the special code to add to cart'),
                   ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
@@ -157,6 +198,29 @@ class _QrScanViewState extends State<QrScanView> {
           )
         ],
       ),
+    );
+  }
+
+  Column productCard(title, data) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Text(
+          data,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ],
     );
   }
 

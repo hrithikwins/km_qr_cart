@@ -6,6 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const QR_SCAN = _Paths.HOME + _Paths.QR_SCAN;
   static const CART_SUMMARY = _Paths.HOME + _Paths.CART_SUMMARY;
+  static const CHECKOUT = _Paths.HOME + _Paths.CART_SUMMARY + _Paths.CHECKOUT;
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const HOME = '/home';
   static const QR_SCAN = '/qr-scan';
   static const CART_SUMMARY = '/cart-summary';
+  static const CHECKOUT = '/checkout';
 }
