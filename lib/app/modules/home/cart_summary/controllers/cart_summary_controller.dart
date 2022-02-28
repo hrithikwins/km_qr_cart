@@ -6,10 +6,6 @@ class CartSummaryController extends GetxController {
   var storageBox = GetStorage();
 
   final count = 0.obs;
-  // final name = Get.arguments[0];
-  // final email = Get.arguments[1];
-  // final phone = Get.arguments[2];
-  // final trolleyNumber = Get.arguments[3];
   var totalPrice = 0.obs;
   var cartItems = [].obs;
 

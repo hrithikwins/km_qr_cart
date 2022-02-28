@@ -48,7 +48,7 @@ class CartSummaryView extends GetView<CartSummaryController> {
                 ElevatedButton(
                   child: Text('Checkout'),
                   onPressed: () {
-                    Get.to(
+                    Get.toNamed(
                       Routes.CHECKOUT,
                       arguments: controller.totalPrice.value,
                     );
