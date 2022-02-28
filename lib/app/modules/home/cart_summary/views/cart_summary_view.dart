@@ -40,7 +40,7 @@ class CartSummaryView extends GetView<CartSummaryController> {
               children: [
                 Obx(
                   () => Text(
-                    //rupee symbol
+                    //rupee symbol \u20B9
                     'Cart Total:  \u20B9 ${controller.totalPrice.value}',
                     style: TextStyle(fontSize: 20),
                   ),

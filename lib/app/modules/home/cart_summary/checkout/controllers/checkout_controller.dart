@@ -29,6 +29,7 @@ class CheckoutController extends GetxController {
   void increment() => count.value++;
 
   void readUserDetails() {
+
     name.value = storageBox.read('name');
     email.value = storageBox.read('email');
     phone.value = storageBox.read('phone');
@@ -36,14 +37,15 @@ class CheckoutController extends GetxController {
   }
 
   void pay() {
-    //success snackbar
-
+    //clearing all details
     storageBox.write("products", []);
     storageBox.write('name', "");
     storageBox.write('email', "");
     storageBox.write('phone', "");
     storageBox.write('trolleyNumber', "");
+    //redirecting to the home page
     Get.offAllNamed(Routes.HOME);
+    //success snackbar
     Get.snackbar(
       "Success",
       "Payment Successful",

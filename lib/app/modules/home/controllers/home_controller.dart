@@ -48,12 +48,6 @@ class HomeController extends GetxController {
       storageBox.write("trolleyNumber", trolleyNumber.value);
       Get.toNamed(
         Routes.CART_SUMMARY,
-        arguments: [
-          name.value,
-          email.value,
-          phone.value,
-          trolleyNumber.value,
-        ],
       );
     }
   }
